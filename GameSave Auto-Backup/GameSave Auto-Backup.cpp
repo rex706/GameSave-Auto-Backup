@@ -15,16 +15,22 @@
 #include <iostream>
 using namespace std;
 
-void dirExists(const char *path){
+int dirExists(const char *path){
 
 	struct stat info;
 
-	if (stat(path, &info) != 0)
+	if (stat(path, &info) != 0) {
 		printf("\nCannot access %s\n\n", path);
-	else if (info.st_mode & S_IFDIR)
+		return 0;
+	}
+	else if (info.st_mode & S_IFDIR) {
 		printf("\nDropBox directory found! '%s'\n", path);
-	else
+		return 1;
+	}
+	else {
 		printf("\nUnable to locate DropBox directory. Make sure it is installed and signed in.\n");
+		return 0;
+	}
 }
 
 //gets path where exe was opened from (should be the game folder)
@@ -56,7 +62,11 @@ int main(int argc, char** argv){
 	char path[MAX_PATH];
 	SHGetFolderPathA(NULL, CSIDL_PROFILE, NULL, 0, path);
 	strcat_s(path, "\\Dropbox\\saves");
-	dirExists(path);
+	int dir = dirExists(path);
+	if (dir == 0) {
+		system("PAUSE");
+		return 0;
+	}
 
 	//fetch files from DropBox
 	cout << "\nLoading save files from DropBox...\n";
