@@ -159,6 +159,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\icon\sims4.ico" />
     <Image Include="icon1.ico" />
   </ItemGroup>
   <ItemGroup>
