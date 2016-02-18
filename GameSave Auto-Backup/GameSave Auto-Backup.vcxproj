@@ -159,7 +159,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\Downloads\Icon.ico" />
     <Image Include="icon1.ico" />
   </ItemGroup>
   <ItemGroup>
