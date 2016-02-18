@@ -39,10 +39,10 @@ int main(int argc, char** argv){
 
 	//check for internet connection. if no internet display error and ask if still want to launch game 
 	if (InternetCheckConnection(L"http://www.google.com", FLAG_ICC_FORCE_CONNECTION, 0))
-		cout << "\nConnected to the Internet!\n";
+		cout << "Connected to the Internet!\n";
 
 	else {
-		cout << "\nWARNING: No Internet connection found. Save files cannot be synced. Play anyway? Y/N\n";
+		cout << "WARNING: No Internet connection found. Save files cannot be synced. Play anyway? Y/N\n";
 	
 		char response;
 		cin >> response;
@@ -81,7 +81,7 @@ int main(int argc, char** argv){
 		cout << "\nGame closing...\n";
 	}
 	else {
-		cout << "ERROR: Could not find game executable! Is the launcher in the correct directory?\n\n";
+		cout << "\nERROR: Could not find game executable! Is the launcher in the correct directory?\n\n";
 		system("PAUSE");
 		return 0;
 	}

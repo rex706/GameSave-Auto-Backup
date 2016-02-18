@@ -1,2 +1,31 @@
 *.ipch
 .vs/GameSave Auto-Backup/v14/.suo
+*.log
+*.tlog
+GameSave Auto-Backup/x64/Debug/GameSave Auto-Backup.obj
+GameSave Auto-Backup/x64/Debug/GameSave Auto-Backup.pch
+GameSave Auto-Backup/x64/Debug/vc140.pdb
+x64/Debug/GameSave Auto-Backup.exe
+x64/Debug/GameSave Auto-Backup.ilk
+GameSave Auto-Backup/x64/Debug/GameSave Auto-Backup.res
+GameSave Auto-Backup/x64/Debug/vc140.idb
+GameSave Auto-Backup/x64/Debug/stdafx.obj
+x64/Debug/GameSave Auto-Backup.pdb
+GameSave Auto-Backup/Debug/GameSave Auto-Backup.obj
+GameSave Auto-Backup/Debug/GameSave Auto-Backup.pch
+GameSave Auto-Backup/Debug/GameSave Auto-Backup.res
+GameSave Auto-Backup/Debug/stdafx.obj
+GameSave Auto-Backup/Debug/vc140.idb
+GameSave Auto-Backup/Debug/vc140.pdb
+GameSave Auto-Backup/Release/GameSave Auto-Backup.obj
+GameSave Auto-Backup/Release/GameSave Auto-Backup.pch
+GameSave Auto-Backup/Release/GameSave Auto-Backup.res
+Debug/GameSave Auto-Backup.exe
+Debug/GameSave Auto-Backup.ilk
+Debug/GameSave Auto-Backup.pdb
+GameSave Auto-Backup/Release/stdafx.obj
+GameSave Auto-Backup/Release/vc140.pdb
+Release/GameSave Auto-Backup.exe
+Release/GameSave Auto-Backup.iobj
+Release/GameSave Auto-Backup.ipdb
+Release/GameSave Auto-Backup.pdb
