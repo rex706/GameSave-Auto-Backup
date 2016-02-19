@@ -4,4 +4,5 @@ Currently only working with The Sims 4 as a test.
 
 Log in to desired Google Drive account and place exe in \Game\Bin next to ts4.exe
 
-You currently must change the directory location of the included icon file to where ever you save this in order to compile.
+# Plans
+Make usable for any user specified game and save to a file that can be loaded. 
