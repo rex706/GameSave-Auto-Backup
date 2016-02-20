@@ -5,6 +5,8 @@
 #endif
 
 #include "stdafx.h"
+#include <dirent.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <windows.h>
@@ -29,10 +31,6 @@ int dirExists(const char *path){
 	else if (info.st_mode & S_IFDIR) {
 		printf("\nGoogle Drive directory found! '%s'\n", path);
 		return 1;
-	}
-	else {
-		printf("\nUnable to locate Google Drive directory. Make sure it is installed and signed in.\n");
-		return 0;
 	}
 }
 
@@ -64,13 +62,37 @@ int main(int argc, char** argv){
 	//check if Google Drive directory exists
 	char path[MAX_PATH];
 	SHGetFolderPathA(NULL, CSIDL_PROFILE, NULL, 0, path);
-	strcat_s(path, "\\Google Drive\\Game Saves\\The Sims 4");
-	int dir = dirExists(path);
-	if (dir == 0) {
-		cout << "\nERROR: Could not locate Google Drive directory. Make sure it is installed and signed in, then try again.";
+	strcat_s(path, "\\Google Drive\\Game Saves");
+	int dirReturn = dirExists(path);
+	if (dirReturn == 0) {
+		cout << "\nERROR: Could not locate Google Drive directory. Make sure it is installed and signed in, then try again.\n";
 		system("PAUSE");
 		return 0;
 	}
+
+	//list foldres in Google Drive 'Game Saves' directory
+	//figure out how to make these selectable - maybe load a saved file in selected directory, which contains path info for game exe and local save location
+	DIR *dir = opendir(path);
+	int k = 1;
+	string temp;
+
+	struct dirent *entry = readdir(dir);
+	cout << "\nSave folders found:\n";
+	while (entry != NULL)
+	{
+		if (entry->d_type == DT_DIR) {
+			
+			temp = entry->d_name;
+
+			if (temp.length() > 2) {
+
+				printf("%d. %s\n", k, entry->d_name);
+				k++;
+			}
+		}
+		entry = readdir(dir);
+	}
+	closedir(dir);
 
 	//fetch files from Google Drive
 	cout << "\nLoading save files from Google Drive...\n";
@@ -88,7 +110,7 @@ int main(int argc, char** argv){
 	PROCESS_INFORMATION processInfo;
 	if (CreateProcess(widestr, NULL, NULL, NULL, TRUE, 0, NULL, NULL, &info, &processInfo))
 	{
-		cout << "\nStarting Game!\n";
+		cout << "\nStarting Game! Do not close this window!\n";
 		::WaitForSingleObject(processInfo.hProcess, INFINITE);
 		CloseHandle(processInfo.hProcess);
 		CloseHandle(processInfo.hThread);
@@ -104,7 +126,7 @@ int main(int argc, char** argv){
 
 	//find a way to deal with multiple people playing and saving at the same time
 
-	//check to make sure there is enough space to transfer files. 50 mb at least
+	//check to make sure there is enough space to transfer files. 50 mb at least?
 
 	//push files to Google Drive
 	cout << "\nUploading save files to Google Drive...\n";
