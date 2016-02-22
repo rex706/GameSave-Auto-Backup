@@ -1,11 +1,19 @@
 # GameSave-Auto-Backup
 Automatically backup game saves to a Google Drive folder to be accessed from anywhere.
-Currently only working with The Sims 4 as a test.
 
-Log in to desired Google Drive account and place exe in \Game\Bin next to ts4.exe
+*Now works with all games and loads paths from an input file.*
 
-Program currenlty utilizes the dirent.h library, which not come with some compilers.
-You can get it here: https://github.com/tronkko/dirent
+Make sure to be logged into your Google Drive account.
+Files will be read and saved to \Google Drive\Game Saves\*GameName*
+Create a file 'settings.txt' in your game folder and copy the file path to your local save folder on the first line and the game exe path on the second line.
+Make sure to use double slash '\\' format between folders instead of the standard single slash or it will not work.
+Also make sure not to include a slash at the end of the exe path.
 
-# Plans
-Make usable for any user specified game and save to a file that can be loaded. 
+example:
+
+C:\\Users\\rex706\\Documents\\Electronic Arts\\The Sims 4\\saves\
+D:\\Games\\The Sims 4\\Game\\Bin\\TS4.exe
+
+Program currenlty utilizes the dirent.h and boost libraries.
+- dirent.h https://github.com/tronkko/dirent
+- boost http://www.boost.org/ 

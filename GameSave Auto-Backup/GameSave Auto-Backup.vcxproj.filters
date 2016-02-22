@@ -37,11 +37,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\icon\sims4.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="GameSave Auto-Backup.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
