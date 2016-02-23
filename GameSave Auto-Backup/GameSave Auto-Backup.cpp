@@ -31,30 +31,28 @@ bool CopyDir(boost::filesystem::path const & source, boost::filesystem::path con
 		// Check whether the function call is valid
 		if (!boost::filesystem::exists(source) || !boost::filesystem::is_directory(source)){
 
-			std::cerr << "Source directory "
-				<< source.string()
-				<< " does not exist or is not a directory."
-				<< '\n';
+			std::cerr << "Source directory " << source.string() << " does not exist or is not a directory." << '\n';
 			return false;
 		}
 
-		if (boost::filesystem::exists(destination)){
+		/*if (boost::filesystem::exists(destination)) {
 
-			std::cerr << "Destination directory '"
-				<< destination.string()
-				<< "' already exists." << '\n'
-			    << " | Removing... \n";
-			boost::filesystem::remove_all(destination);
-			Sleep(4000);
-		}
+			std::cerr << "\nDestination directory '" << destination.string() << "' already exists." << '\n'
+                      << " | Checking date modified... \n";
 
-		// Create the destination directory
-		if (!boost::filesystem::create_directory(destination)){
 
-			std::cerr << "Unable to create destination directory"
-				<< destination.string() << '\n';
-			return false;
-		}
+			time_t sourceTime = boost::filesystem::last_write_time(source);
+			time_t destTime = boost::filesystem::last_write_time(destination);
+
+			cout << " | Source: " << sourceTime << "    Destination: " << destTime << "\n\n";
+
+			if (sourceTime <= destTime) {
+				cout << " | Files up to date!\n";
+				return true;
+			}
+			else
+				cout << " | Files are out of date! Attempting to update...\n";
+		}*/
 	}
 
 	catch (boost::filesystem::filesystem_error const & e){
@@ -77,7 +75,7 @@ bool CopyDir(boost::filesystem::path const & source, boost::filesystem::path con
 			}
 			else{
 				// Found file: Copy
-				boost::filesystem::copy_file(current, destination / current.filename());
+				boost::filesystem::copy_file(current, destination / current.filename(), boost::filesystem::copy_option::overwrite_if_exists);
 				cout << " | Copying files...\n";
 			}
 		}catch (boost::filesystem::filesystem_error const & e){
@@ -131,7 +129,6 @@ int main(int argc, char** argv){
 	}
 
 	//list foldres in Google Drive 'Game Saves' directory
-	//figure out how to make these selectable - maybe load a saved file settings.txt in selected directory, which contains path info for game exe and local save location
 	//if file not found, make one and ask for directories. write and save the file
 	DIR *dir = opendir(path);
 	int k = 0;
@@ -159,7 +156,6 @@ int main(int argc, char** argv){
 	}
 	closedir(dir);
 
-	string gameChoice;
 	string localSavePath;
 	string exePath;
 	char newPath[MAX_PATH];
@@ -225,6 +221,7 @@ int main(int argc, char** argv){
 		system("PAUSE");
 		return 0;
 	}
+
 	//convert string to stupid LPWSTR type so it is compatable with CreateProcess function
 	int bufferlen = ::MultiByteToWideChar(CP_ACP, 0, exePath.c_str(), exePath.size(), NULL, 0);
 	LPWSTR widestr = new WCHAR[bufferlen + 1];
@@ -237,6 +234,7 @@ int main(int argc, char** argv){
 	if (CreateProcess(widestr, NULL, NULL, NULL, TRUE, 0, NULL, NULL, &info, &processInfo))
 	{
 		cout << "\nStarting Game! Do not close this window!\n";
+		Sleep(5000);
 		::WaitForSingleObject(processInfo.hProcess, INFINITE);
 		CloseHandle(processInfo.hProcess);
 		CloseHandle(processInfo.hThread);
