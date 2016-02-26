@@ -44,6 +44,8 @@ bool CopyDir(boost::filesystem::path const & source, boost::filesystem::path con
 		}
 		if (!boost::filesystem::exists(destination)) {
 
+			cout << "Destination folder not found. Creating directory...\n";
+
 			boost::filesystem::create_directory(destination);
 		}
 		//compares date modified between source and destination
@@ -122,16 +124,23 @@ int main(int argc, char* argv[]){
 	strcat_s(googlePath, "\\Google Drive");
 	strcat_s(path, "\\Google Drive\\Game Saves");
 	
-	if (!boost::filesystem::exists(path)) {
+	if (!boost::filesystem::exists(googlePath)) {
 		cout << "\nERROR: Could not locate Google Drive directory. Make sure it is installed and signed in, then try again.\n";
 		system("PAUSE");
 		return 0;
 	}
 	else {
-		cout << "\nGoogle Drive save directory found! '" << path << "'\n";
+		cout << "\nGoogle Drive save directory found! '" << googlePath << "'\n";
+	}
+
+	if (!boost::filesystem::exists(path)) {
+
+		cout << "\nGame Save folder not found! Creating directory...\n";
+		boost::filesystem::create_directory(path);
 	}
 
 	string localSavePath;
+	string gameName;
 	string cloudSavePath;
 	string exeName;
 	string params;
@@ -165,10 +174,10 @@ int main(int argc, char* argv[]){
 			cin.get();
 
 			ofstream output("backup_info.txt");
-			cout << "\n\nEnter local save folder path (use '\\' format):\n";
+			cout << "\n\nEnter local save folder path (use '\\\' format):\n";
 			getline(cin, localOut);
 			output << localOut + "\n";
-			cout << "\nEnter Google Drive save folder path (use '\\' format):\n";
+			cout << "\nEnter name of game:\n";
 			getline(cin, cloudOut);
 			output << cloudOut + "\n";
 			cout << "\nEnter game exe name:\n";
@@ -193,10 +202,12 @@ int main(int argc, char* argv[]){
 
 	cout << "Reading backup_settings.txt...\n";
 	getline(in_stream, localSavePath);
-	getline(in_stream, cloudSavePath);
+	getline(in_stream, gameName);
 	getline(in_stream, exeName);
 	getline(in_stream, params);
 	in_stream.close();
+
+	cloudSavePath = string(path) + "\\" + gameName;
 
 	//fetch files from Google Drive
 	if (boost::filesystem::exists(cloudSavePath)) {
@@ -212,7 +223,7 @@ int main(int argc, char* argv[]){
 	}
 	string exePath = ExePath() + "\\" + exeName;
 
-	//convert strings to LPWSTR type so it is compatable with CreateProcess function
+	//convert strings to LPWSTR type so it is compatable with ShellExecute
 	int bufferlen = MultiByteToWideChar(CP_ACP, 0, exePath.c_str(), exePath.size(), NULL, 0);
 	LPWSTR widestr = new WCHAR[bufferlen + 1];
 	MultiByteToWideChar(CP_ACP, 0, exePath.c_str(), exePath.size() , &widestr[0], bufferlen);
