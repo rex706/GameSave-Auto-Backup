@@ -48,25 +48,6 @@ bool CopyDir(boost::filesystem::path const & source, boost::filesystem::path con
 
 			boost::filesystem::create_directory(destination);
 		}
-		//compares date modified between source and destination
-		/*if (boost::filesystem::exists(destination)) {
-
-			std::cerr << "\nDestination directory '" << destination.string() << "' already exists." << '\n'
-                      << " | Checking date modified... \n";
-
-
-			time_t sourceTime = boost::filesystem::last_write_time(source);
-			time_t destTime = boost::filesystem::last_write_time(destination);
-
-			cout << " | Source: " << sourceTime << "    Destination: " << destTime << "\n\n";
-
-			if (sourceTime <= destTime) {
-				cout << " | Files up to date!\n";
-				return true;
-			}
-			else
-				cout << " | Files are out of date! Attempting to update...\n";
-		}*/
 	}
 
 	catch (boost::filesystem::filesystem_error const & e){
@@ -195,7 +176,7 @@ int main(int argc, char* argv[]){
 
 	in_stream.open(settings);
 	if (!in_stream.good()) {
-		cout << "Cannot read " << settings << endl;
+		cout << "\nERROR: Cannot read " << settings << endl;
 		system("PAUSE");
 		return 0;
 	}
@@ -223,6 +204,8 @@ int main(int argc, char* argv[]){
 	}
 	string exePath = ExePath() + "\\" + exeName;
 
+	time_t writeTime1 = boost::filesystem::last_write_time(cloudSavePath);
+
 	//convert strings to LPWSTR type so it is compatable with ShellExecute
 	int bufferlen = MultiByteToWideChar(CP_ACP, 0, exePath.c_str(), exePath.size(), NULL, 0);
 	LPWSTR widestr = new WCHAR[bufferlen + 1];
@@ -247,7 +230,7 @@ int main(int argc, char* argv[]){
 	ShExecInfo.hInstApp = NULL;
 
 	if (ShellExecuteEx(&ShExecInfo)) {
-		cout << "\nStarting Game...\n";
+		cout << "\nStarting "<< gameName << "...\n";
 		WaitForSingleObject(ShExecInfo.hProcess, INFINITE);
 		CloseHandle(ShExecInfo.hProcess);
 		cout << "\nGame closing...\n";
@@ -261,7 +244,16 @@ int main(int argc, char* argv[]){
 	delete[] widestr;
 	delete[] widestrParams;
 
-	//find a way to deal with multiple users playing and saving at the same time
+	//deal with multiple users playing and saving at the same time
+	time_t writeTime2 = boost::filesystem::last_write_time(cloudSavePath);
+
+	if (writeTime2 != writeTime1) {
+
+		cout << "\nERROR: Cloud save location has been modified since playing!!\n SAVES WILL NOT BE BACKED UP\n"
+			 << "WARNING: Running this again will erase your data by fetching the current cloud save.\n";
+		system("PAUSE");
+		return 0;
+	}
 
 	//check to make sure there is enough space to transfer files. 100 mb at least
 	boost::filesystem::space_info s = boost::filesystem::space(path);
@@ -269,6 +261,12 @@ int main(int argc, char* argv[]){
 	     << "Total: " << s.capacity << '\n'
 	     << "Free: " << s.free << '\n'
 	     << "Available: " << s.available << '\n';
+
+	if (s.available < 104857600) {
+		cout << "\nERROR: less than 100mb available on Google Drive!\n";
+		system("PAUSE");
+		return 0;
+	}
 
 	//push files to Google Drive
 	cout << "\nUploading save files to Google Drive...\n";
