@@ -1,0 +1,12 @@
+IMPORTANT. Your project file will fail to build until you do the following.
+Because we have different install directories for boost, and you are statically linked to boost while I like to dynamically link, we can use an unsynchronized property sheet to store some project specific settings that differ between our computers.
+Create a property sheet primary_property_sheet.prop from within visual studio. Then, just include boost the same way you did before, in the property sheet. The project file will automatically inherit from this property sheet, without forcing you and I to have the same locations for boost, and the same versions, etc. This same concept applies to all libraries in the future.
+Note, however, that Git MUST NOT sync this property sheet, because it is machine specific. Make sure you either always exclude it from commits, or add .prop files to the .gitignore file.
+
+Some changes.
+1. Commented out some old code and replaced with my own touches.
+2. Added COMInitializer class.
+3. Because this project uses a precompiled header file, all commonly accessed header file include directives (windows.h, string, stdio, etc.) should be included in this file and none of the other source files.
+4. Added file and folder dialog selections when choosing directories and exe files.
+5. Added additional error checking.
+6. Replaced .gitignore file contents with standard VS .gitignore file. This will ignore everything that needs to be ignored, without having to manually add things.
