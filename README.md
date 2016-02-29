@@ -5,21 +5,21 @@ Automatically backup game saves to a Google Drive folder to be accessed from any
 
 Make sure to be logged into your Google Drive account
 
-Files should be saved to \Google Drive\Game Saves\[GameName]
+Files will be saved to "\Google Drive\Game Saves\\[GameName]". Directory will be created on first use if not found. 
 
-Place the program exe into next to your game exe and follow instructions to create info text file.
+Place the program exe next to your game exe and follow instructions to create info text file.
 
-Make sure to use double slash '\\' format between folders instead of the standard single slash or it will not work.
+Make sure to use double slash '\\\' format between folders instead of the standard single slash or it will not work.
 
 Also make sure not to include a slash at the end of the path.
 
-example:
+info txt example:
 
-C:\\Users\\rex706\\Documents\\Electronic Arts\\The Sims 4\\saves
+C:\\\Users\\\rex706\\\Documents\\\Electronic Arts\\\The Sims 4\\\saves
 
-C:\\Users\\rex706\\Google Drive\\Game Saves\\The Sims 4
+The Sims 4
 
-D:\\Games\\The Sims 4\\Game\\Bin\\TS4.exe
+TS4.exe
 
 
 
