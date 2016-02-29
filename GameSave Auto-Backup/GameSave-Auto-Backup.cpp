@@ -419,6 +419,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	wstring exePath = ExePath() + L"\\" + exeName;
+	time_t writeTime1 = boost::filesystem::last_write_time(cloudSavePath);
 
 	//launch game and wait for it to close
 	SHELLEXECUTEINFO ShExecInfo = { 0 };
@@ -448,7 +449,15 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 
-	//TODO: Find a way to deal with multiple users playing and saving at the same time
+	//deal with multiple users playing and saving at the same time
+	time_t writeTime2 = boost::filesystem::last_write_time(cloudSavePath);
+	if (writeTime2 != writeTime1) {
+
+		cout << "\nERROR: Cloud save location has been modified since playing!!\n SAVES WILL NOT BE BACKED UP\n"
+			<< "WARNING: Running this again will erase your data by fetching the current cloud save.\n";
+		pause;
+		return 0;
+	}
 
 	//check to make sure there is enough space to transfer files. 100 mb at least
 	boost::filesystem::space_info s = boost::filesystem::space(saveGamePath.GetString());
@@ -456,6 +465,13 @@ int main(int argc, char* argv[]) {
 		<< "Total: " << s.capacity << '\n'
 		<< "Free: " << s.free << '\n'
 		<< "Available: " << s.available << '\n';
+	
+	if (s.available < 104857600) {
+		cout << "\nERROR: less than 100mb available on Google Drive!\n";
+		pause;
+		return 0;
+	}
+
 
 	//push files to Google Drive
 	cout << "\nUploading save files to Google Drive...\n";
