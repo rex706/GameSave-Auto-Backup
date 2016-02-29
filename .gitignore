@@ -79,6 +79,9 @@ ipch/
 *.cachefile
 *.VC.opendb
 
+# Visual Studio Machine Specific Property Files
+*.props
+
 # Visual Studio profiler
 *.psess
 *.vsp
