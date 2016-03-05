@@ -81,6 +81,9 @@ ipch/
 *.sdf
 *.cachefile
 
+#Visual C++ property sheet files.
+*.props
+
 # Visual Studio profiler
 *.psess
 *.vsp
