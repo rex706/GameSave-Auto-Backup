@@ -1,6 +1,8 @@
 # GameSave-Auto-Backup
 Automatically backup game saves to a Google Drive folder to be accessed from anywhere.
 
+----NO LONGER SUPPORTED. SEE 'BAKKUP' REPOSITORY----
+
 *Now works with all games and loads paths from an input file.*
 
 *Program exe can now be placed anywhere and used as a launcher for multiple games.*

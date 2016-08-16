@@ -298,7 +298,6 @@ int main(int argc, char* argv[]){
 	}
 
 	int choice = 0;
-	wstring newPath;
 	wstring settings;
 
 	if (k >= 2) {
@@ -306,15 +305,13 @@ int main(int argc, char* argv[]){
 		cin >> choice;
 		choice = choice - 1;
 
-		newPath =  cloudSavePath[choice];
-		settings = newPath + L"\\backup_info.txt";
+		settings = cloudSavePath[choice] + L"\\backup_info.txt";
 	}
 	//if there is only one option, use as default
 	else {
-		newPath = cloudSavePath[choice];
-		settings = newPath + L"\\backup_info.txt";
+		settings = cloudSavePath[choice] + L"\\backup_info.txt";
 	}
-	wcout << "\n CLOUD PATH: " << newPath << "\n" << endl;
+	wcout << "\n CLOUD PATH: " << cloudSavePath[choice] << "\n" << endl;
 
 	wstring localSavePath;
 	wstring exePath;
